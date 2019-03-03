@@ -1,0 +1,25 @@
+{
+  "name": "greenskies/json",
+  "type": "library",
+  "description": "An improved php json library",
+  "autoload": {
+    "psr-4": {
+      "Greenskies\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests"
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "bin-dir": "bin"
+  },
+  "require": {
+    "justinrainbow/json-schema": "^5.2",
+    "karriere/json-decoder": "^2.2",
+    "phpunit/phpunit": "^8.0",
+    "symfony/options-resolver": "^4.2"
+  }
+}
