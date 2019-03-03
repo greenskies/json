@@ -1,6 +1,7 @@
 {
   "name": "greenskies/json",
   "type": "library",
+  "license": "MIT",
   "description": "An improved php json library",
   "autoload": {
     "psr-4": {
@@ -19,7 +20,9 @@
   "require": {
     "justinrainbow/json-schema": "^5.2",
     "karriere/json-decoder": "^2.2",
-    "phpunit/phpunit": "^8.0",
     "symfony/options-resolver": "^4.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.0"
   }
 }
