@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: todd
- * Date: 3/2/19
- * Time: 10:37 AM
- */
 
 namespace Greenskies;
 
