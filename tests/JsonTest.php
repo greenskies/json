@@ -32,15 +32,28 @@ class JsonTest extends TestCase
 
     public function testEncode()
     {
-        $result = Json::Encode( ['good' => true]);
+        $result = Json::Encode(['good' => true]);
         $this->assertEquals('{"good":true}', $result);
     }
 
-    public function testEncodeException()
+    public function testDecodeException()
     {
-        $this->expectException(JsonException::class);
-        Json::Decode( '*');
-
+        if (PHP_VERSION_ID >= 70300) {
+            $this->expectException(\JsonException::class);
+        } else {
+            $this->expectException(JsonException::class);
+        }
+        Json::Decode('*');
     }
 
+    public function testDecodeToArray()
+    {
+        $jsonString = '{"good":true}';
+        $options = [
+            Json::ASSOCIATIVE => true,
+        ];
+        $decoded = Json::Decode($jsonString, $options);
+
+        $this->assertTrue($decoded['good']);
+    }
 }
