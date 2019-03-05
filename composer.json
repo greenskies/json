@@ -3,6 +3,13 @@
   "type": "library",
   "license": "MIT",
   "description": "An improved php json library",
+  "authors": [
+    {
+      "name": "Johannes Pichler",
+      "email": "johannes.pichler@karriere.at",
+      "role": "Maintainer"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "Greenskies\\": "src"
@@ -18,11 +25,13 @@
     "bin-dir": "bin"
   },
   "require": {
+    "ext-json": "*",
     "justinrainbow/json-schema": "^5.2",
     "karriere/json-decoder": "^2.2",
     "symfony/options-resolver": "^4.2"
   },
   "require-dev": {
+    "php-coveralls/php-coveralls": "^2.1",
     "phpunit/phpunit": "^8.0"
   }
 }
