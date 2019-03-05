@@ -1,3 +1,6 @@
+[![author](https://img.shields.io/badge/author-%40toddeidson-blue.svg)](https://eidson.info)
+[![Coverage Status](https://coveralls.io/repos/github/greenskies/json/badge.svg?branch=master)](https://coveralls.io/github/greenskies/json?branch=master)
+[![Build Status](https://travis-ci.org/greenskies/json.svg?branch=master)](https://travis-ci.org/greenskies/json)
 # Greenskies Json 
 
 A PHP library to improve decoding - including schema validation and decoding to a class
