@@ -2,12 +2,13 @@
 
 namespace Greenskies;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Karriere\JsonDecoder\Bindings\RawBinding;
-use Karriere\JsonDecoder\Transformer;
 
 class JsonDecodeToClass
 {
+    public const PRIVATE = 'private';
+    public const PROTECTED = 'protected';
+    public const TRANSFORMERS = 'transformers';
 
     private $transformers = [];
 
@@ -15,58 +16,30 @@ class JsonDecodeToClass
 
     private $decodeProtectedProperties;
 
-    /**
-     * JsonDecoder constructor.
-     *
-     * @param bool $decodePrivateProperties
-     * @param bool $decodeProtectedProperties
-     */
-    public function __construct($decodePrivateProperties = false, $decodeProtectedProperties = false)
+    public function __construct(array $options = [])
     {
-        $this->decodePrivateProperties = $decodePrivateProperties;
-        $this->decodeProtectedProperties = $decodeProtectedProperties;
+        $this->decodePrivateProperties = $options[self::PRIVATE];
+        $this->decodeProtectedProperties = $options[self::PROTECTED];
+
+        /** @var Transformer $transformer */
+        foreach ($options[self::TRANSFORMERS] as $transformer) {
+            $this->transformers[$transformer->transforms()] = $transformer;
+        }
     }
 
     /**
-     * registers the given transformer.
+     * @param $json
+     * @param string $classType
      *
-     * @param Transformer $transformer
+     * @return mixed|null
+     *
+     * @throws \Karriere\JsonDecoder\Exceptions\InvalidBindingException
      */
-    public function register(Transformer $transformer)
-    {
-        $this->transformers[$transformer->transforms()] = $transformer;
-    }
-
-    public function decode($json, string $classType)
-    {
-        return $this->decodeArray($json, $classType);
-    }
-
-    public function decodeMultiple(string $json, string $classType)
-    {
-        $data = json_decode($json, true);
-
-        return array_map(
-            function ($element) use ($classType) {
-                return $this->decodeArray($element, $classType);
-            },
-            $data
-        );
-    }
-
-    /**
-     * decodes the given array data into an instance of the given class type.
-     *
-     * @param $jsonArrayData array
-     * @param $classType string
-     *
-     * @return mixed an instance of $classType
-     */
-    public function decodeArray($jsonArrayData, $classType)
+    public function decodeArray($json, string $classType)
     {
         $instance = new $classType();
 
-        $jsonArrayData = (array)$jsonArrayData;
+        $jsonArrayData = (array) $json;
 
         if (array_key_exists($classType, $this->transformers)) {
             $instance = $this->transform($this->transformers[$classType], $jsonArrayData, $instance);
@@ -87,7 +60,14 @@ class JsonDecodeToClass
         return $this->decodeProtectedProperties;
     }
 
-    private function transform($transformer, $jsonArrayData, $instance)
+    /**
+     * @param Transformer $transformer
+     * @param $jsonArrayData
+     * @param $instance
+     *
+     * @return mixed|null
+     */
+    private function transform(Transformer $transformer, $jsonArrayData, $instance)
     {
         if (empty($jsonArrayData)) {
             return null;
@@ -99,6 +79,14 @@ class JsonDecodeToClass
         return $classBindings->decode($jsonArrayData, $instance);
     }
 
+    /**
+     * @param $jsonArrayData
+     * @param $instance
+     *
+     * @return mixed|null
+     *
+     * @throws \Karriere\JsonDecoder\Exceptions\InvalidBindingException
+     */
     protected function transformRaw($jsonArrayData, $instance)
     {
         if (empty($jsonArrayData)) {

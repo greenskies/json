@@ -1,6 +1,6 @@
 <?php
 
-namespace Karriere\JsonDecoder;
+namespace Greenskies;
 
 interface Transformer
 {
