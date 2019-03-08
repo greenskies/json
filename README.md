@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/85272d5b41c3471d95f6ceaa32e0e90b)](https://app.codacy.com/app/eidsonator/json?utm_source=github.com&utm_medium=referral&utm_content=greenskies/json&utm_campaign=Badge_Grade_Dashboard)
 [![author](https://img.shields.io/badge/author-%40toddeidson-blue.svg)](https://eidson.info)
 [![Coverage Status](https://coveralls.io/repos/github/greenskies/json/badge.svg?branch=master)](https://coveralls.io/github/greenskies/json?branch=master)
 [![Build Status](https://travis-ci.org/greenskies/json.svg?branch=master)](https://travis-ci.org/greenskies/json)
