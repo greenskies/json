@@ -20,6 +20,7 @@ class Json
     public const DECODE_MULTIPLE = 'decode_multiple';
     public const DECODER = 'decoder';
     public const VALIDATOR = 'validator';
+    public const ENCODE_OPTIONS = 'encode_options';
 
     public static function Validate(string $json, array $options = [])
     {
@@ -72,6 +73,9 @@ class Json
         }
 
         if ($options[static::VALIDATOR][static::JSON_SCHEMA] && !self::validateSchema($results, $options)) {
+            if (PHP_VERSION_ID >= 70300) {
+                throw new \JsonException('Schema not validated');
+            }
             throw new JsonException('Schema not validated');
         }
 
@@ -131,7 +135,7 @@ class Json
         $resolver->setDefaults([
             static::ASSOCIATIVE => false,
             static::DEPTH => 512,
-
+            static::ENCODE_OPTIONS => 0,
             static::VALIDATOR => function (OptionsResolver $validatorResolver) {
                 $validatorResolver->setDefaults([
                     static::JSON_SCHEMA => null,
@@ -162,14 +166,19 @@ class Json
      * @return false|string
      *
      * @throws JsonException
+     * @throws \JsonException
      */
-    public static function Encode($object, int $options = 0, int $depth = 512)
+    public static function Encode($object, array $options = [])
     {
-        $result = json_encode($object, $options, $depth);
-        if (!Json::Validate($result)) {
-            throw new JsonException('Not a valid Json String');
+        $options = static::resolveOptions($options);
+
+        if ($options[static::VALIDATOR][static::JSON_SCHEMA] && !self::validateSchema($object, $options)) {
+            if (PHP_VERSION_ID >= 70300) {
+                throw new \JsonException('Schema not validated');
+            }
+            throw new JsonException('Schema not validated');
         }
 
-        return $result;
+        return json_encode($object, $options[static::ENCODE_OPTIONS], $options[static::DEPTH]);
     }
 }

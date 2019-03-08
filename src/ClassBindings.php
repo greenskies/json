@@ -27,10 +27,12 @@ class ClassBindings
     /**
      * decodes all available properties of the given class instance.
      *
-     * @param array $data
-     * @param mixed $instance
+     * @param $data
+     * @param $instance
      *
      * @return mixed
+     *
+     * @throws \ReflectionException
      */
     public function decode($data, $instance)
     {
